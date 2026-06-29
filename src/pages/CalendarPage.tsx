@@ -125,7 +125,6 @@ export function CalendarPage() {
       </section>
 
       <DiaryPanel
-        date={selectedDate}
         initial={formInitial}
         onSave={async (data) => {
           const ok = await upsertEntry(selectedDate, data);

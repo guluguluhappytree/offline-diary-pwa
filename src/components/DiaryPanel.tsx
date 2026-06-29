@@ -1,11 +1,10 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 
 import type { DiaryFormData } from '../types/diary';
 import { MOOD_OPTIONS, WEATHER_OPTIONS } from '../types/diary';
 import './DiaryPanel.css';
 
 interface Props {
-  date: string;
   initial?: Partial<DiaryFormData>;
   onSave: (data: DiaryFormData) => Promise<boolean>;
 }
@@ -17,18 +16,34 @@ const EMPTY: DiaryFormData = {
   review: '',
 };
 
-export function DiaryPanel({ date, initial, onSave }: Props) {
+const CONTENT_PLACEHOLDER =
+  '今天发生了什么重要进展？它带给你怎样的真实感受？（拒绝流水账）';
+
+const REVIEW_PLACEHOLDER = `今天什么事超出了预期？核心原因是什么？
+你提炼出了什么新规则？
+明天具体调整哪个行动？`;
+
+export function DiaryPanel({ initial, onSave }: Props) {
   const [form, setForm] = useState<DiaryFormData>(EMPTY);
   const [saving, setSaving] = useState(false);
+  const [saved, setSaved] = useState(false);
 
   useEffect(() => {
     setForm({ ...EMPTY, ...initial });
+    setSaved(false);
   }, [date, initial]);
 
+  const hasWritten = useMemo(
+    () => form.content.trim().length > 0 || form.review.trim().length > 0,
+    [form.content, form.review],
+  );
+
   const handleSave = async () => {
+    if (!hasWritten) return;
     setSaving(true);
     try {
-      await onSave(form);
+      const ok = await onSave(form);
+      if (ok) setSaved(true);
     } finally {
       setSaving(false);
     }
@@ -36,13 +51,6 @@ export function DiaryPanel({ date, initial, onSave }: Props) {
 
   return (
     <section className="diary-panel">
-      <div className="diary-panel-header">
-        <h2>{date}</h2>
-        <button type="button" className="btn-primary save-btn" disabled={saving} onClick={handleSave}>
-          {saving ? '保存中' : '保存'}
-        </button>
-      </div>
-
       <div className="diary-panel-scroll">
         <label>天气</label>
         <div className="chips">
@@ -51,7 +59,10 @@ export function DiaryPanel({ date, initial, onSave }: Props) {
               key={w}
               type="button"
               className={form.weather === w ? 'chip active' : 'chip'}
-              onClick={() => setForm((f) => ({ ...f, weather: w }))}
+              onClick={() => {
+                setForm((f) => ({ ...f, weather: w }));
+                setSaved(false);
+              }}
             >
               {w}
             </button>
@@ -65,28 +76,50 @@ export function DiaryPanel({ date, initial, onSave }: Props) {
               key={m}
               type="button"
               className={form.mood === m ? 'chip mood active' : 'chip mood'}
-              onClick={() => setForm((f) => ({ ...f, mood: m }))}
+              onClick={() => {
+                setForm((f) => ({ ...f, mood: m }));
+                setSaved(false);
+              }}
             >
               {m}
             </button>
           ))}
         </div>
 
-        <label>文字日记</label>
+        <label>日记</label>
         <textarea
           className="diary-textarea"
-          placeholder="记录今天..."
+          placeholder={CONTENT_PLACEHOLDER}
           value={form.content}
-          onChange={(e) => setForm((f) => ({ ...f, content: e.target.value }))}
+          onChange={(e) => {
+            setForm((f) => ({ ...f, content: e.target.value }));
+            setSaved(false);
+          }}
         />
 
         <label>复盘</label>
         <textarea
           className="diary-textarea review"
-          placeholder="今天学到了什么？"
+          placeholder={REVIEW_PLACEHOLDER}
           value={form.review}
-          onChange={(e) => setForm((f) => ({ ...f, review: e.target.value }))}
+          onChange={(e) => {
+            setForm((f) => ({ ...f, review: e.target.value }));
+            setSaved(false);
+          }}
         />
+
+        {hasWritten && (
+          <div className="save-area">
+            <button
+              type="button"
+              className="btn-primary save-btn"
+              disabled={saving || saved}
+              onClick={handleSave}
+            >
+              {saving ? '保存中…' : saved ? '已保存' : '保存'}
+            </button>
+          </div>
+        )}
       </div>
     </section>
   );
