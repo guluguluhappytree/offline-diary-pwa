@@ -7,22 +7,25 @@
 }
 
 .calendar-top {
-  flex: 0 0 50%;
-  max-height: 50%;
-  min-height: 0;
+  flex-shrink: 0;
+  max-height: 46%;
   display: flex;
   flex-direction: column;
   border-bottom: 1px solid var(--border);
-  padding-bottom: 0.375rem;
+  padding-bottom: 0.5rem;
+  overflow: hidden;
 }
 
 .page-header.compact {
   padding: 0;
   margin-bottom: 0.25rem;
+  flex-shrink: 0;
 }
 
 .page-header.compact h1 {
-  font-size: 1.25rem;
+  font-size: 1.125rem;
+  font-weight: 600;
+  color: var(--text);
 }
 
 .calendar-nav {
@@ -30,54 +33,54 @@
   align-items: center;
   justify-content: space-between;
   margin: 0 0 0.375rem;
-  padding: 0 0.25rem;
+  padding: 0 0.125rem;
   flex-shrink: 0;
 }
 
 .calendar-nav span {
   font-size: 0.8125rem;
   font-weight: 500;
-  color: var(--text);
+  color: var(--text-secondary);
 }
 
 .calendar-nav button {
-  width: 1.75rem;
-  height: 1.75rem;
+  width: 1.625rem;
+  height: 1.625rem;
   border: none;
-  border-radius: 6px;
+  border-radius: 4px;
   background: transparent;
-  font-size: 1rem;
+  font-size: 0.9375rem;
   color: var(--text-secondary);
   cursor: pointer;
 }
 
 .calendar-nav button:active {
-  background: var(--primary-soft);
+  background: var(--accent);
 }
 
 .calendar-grid {
-  flex: 1;
-  min-height: 0;
   display: grid;
   grid-template-columns: repeat(7, 1fr);
-  grid-template-rows: auto repeat(6, 1fr);
-  gap: 1px;
-  align-content: start;
+  grid-auto-rows: 1.625rem;
+  gap: 2px;
+  flex-shrink: 0;
 }
 
 .weekday {
-  text-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   font-size: 0.625rem;
   font-weight: 500;
   color: var(--text-secondary);
-  padding: 0.2rem 0;
-  line-height: 1.2;
+  height: 1.125rem;
 }
 
 .day {
   display: flex;
   align-items: center;
   justify-content: center;
+  height: 1.625rem;
   border: none;
   border-radius: 4px;
   background: transparent;
@@ -87,27 +90,28 @@
   font-weight: 400;
   color: var(--text);
   padding: 0;
-  min-height: 0;
 }
 
 .day.empty {
   cursor: default;
+  pointer-events: none;
 }
 
 .day.today:not(.selected) {
-  background: var(--primary-soft);
-  font-weight: 600;
+  background: var(--accent);
+  font-weight: 500;
 }
 
 .day.selected {
-  background: var(--primary);
-  color: #fff;
-  font-weight: 500;
+  background: var(--accent-selected);
+  color: var(--text);
+  font-weight: 600;
+  box-shadow: inset 0 0 0 1px rgba(55, 53, 47, 0.1);
 }
 
 .day .dot {
   position: absolute;
-  bottom: 2px;
+  bottom: 1px;
   left: 50%;
   transform: translateX(-50%);
   width: 3px;
@@ -117,5 +121,5 @@
 }
 
 .day.selected .dot {
-  background: #fff;
+  background: var(--text);
 }

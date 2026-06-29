@@ -1,6 +1,6 @@
 .toggle {
   display: inline-flex;
-  background: var(--primary-soft);
+  background: var(--accent);
   border-radius: 6px;
   padding: 3px;
   margin-top: 0.75rem;
@@ -59,8 +59,8 @@
 }
 
 .review {
-  background: var(--primary-soft);
-  border-radius: 6px;
+  background: var(--accent);
+  border-radius: 4px;
   padding: 0.5rem 0.625rem;
   margin-top: 0.5rem;
 }

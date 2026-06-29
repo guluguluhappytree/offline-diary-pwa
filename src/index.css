@@ -1,12 +1,14 @@
 :root {
   --bg: #ffffff;
   --surface: #ffffff;
-  --primary: #191919;
-  --primary-soft: #f7f6f3;
-  --text: #191919;
-  --text-secondary: rgba(55, 53, 47, 0.65);
+  --text: #37352f;
+  --text-secondary: rgba(55, 53, 47, 0.55);
   --border: rgba(55, 53, 47, 0.09);
-  --radius: 8px;
+  --accent: rgba(55, 53, 47, 0.06);
+  --accent-hover: rgba(55, 53, 47, 0.1);
+  --accent-selected: rgba(55, 53, 47, 0.12);
+  --primary-soft: #f7f6f3;
+  --radius: 6px;
   --safe-bottom: env(safe-area-inset-bottom, 0px);
   font-family: ui-sans-serif, -apple-system, 'PingFang SC', 'Segoe UI', sans-serif;
   line-height: 1.5;
@@ -45,18 +47,22 @@ textarea {
 }
 
 .btn-primary {
-  background: var(--primary);
-  color: #fff;
-  border: none;
-  border-radius: 6px;
-  padding: 0.55rem 1rem;
+  background: var(--accent);
+  color: var(--text);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 0.45rem 0.875rem;
   font-weight: 500;
-  font-size: 0.875rem;
+  font-size: 0.8125rem;
   cursor: pointer;
 }
 
+.btn-primary:active:not(:disabled) {
+  background: var(--accent-hover);
+}
+
 .btn-primary:disabled {
-  opacity: 0.5;
+  opacity: 0.45;
 }
 
 .btn-ghost {
@@ -95,7 +101,7 @@ textarea {
   width: 1.5rem;
   height: 1.5rem;
   border: 2px solid var(--border);
-  border-top-color: var(--primary);
+  border-top-color: var(--text-secondary);
   border-radius: 50%;
   animation: spin 0.7s linear infinite;
 }
