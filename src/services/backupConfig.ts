@@ -36,6 +36,21 @@ export function isBackupConfigured(): boolean {
   return Boolean(serverUrl && token);
 }
 
+export function getDefaultServerUrl(): string {
+  if (typeof window === 'undefined') return '';
+  const { protocol, hostname, port } = window.location;
+  if (
+    protocol === 'http:' &&
+    (hostname.startsWith('192.168.') ||
+      hostname.startsWith('10.') ||
+      hostname === 'localhost' ||
+      hostname === '127.0.0.1')
+  ) {
+    return `${protocol}//${hostname}${port ? `:${port}` : ''}`;
+  }
+  return '';
+}
+
 export function getLastSyncAt(): string | null {
   return localStorage.getItem(LAST_SYNC_KEY);
 }

@@ -87,6 +87,18 @@ async function uploadMedia(baseUrl: string, token: string, item: MediaItem): Pro
   return true;
 }
 
+function connectionErrorMessage(serverUrl: string): string {
+  const onHttps = typeof window !== 'undefined' && window.location.protocol === 'https:';
+  const backupIsHttp = serverUrl.startsWith('http://');
+  if (onHttps && backupIsHttp) {
+    return '从 Vercel（https）无法直连家里 http。请用 Safari 打开电脑上的 http://192.168.x.x:3927，添加到主屏幕后从那里备份。';
+  }
+  if (serverUrl.includes('172.')) {
+    return '地址不要用 172 开头，请改用电脑终端里 192.168 开头的地址。';
+  }
+  return '连接失败：确认电脑 start.bat 已开、手机和电脑同一 WiFi、地址和密钥正确。';
+}
+
 export async function testBackupConnection(): Promise<{ ok: boolean; message: string }> {
   const { serverUrl, token } = getBackupConfig();
   if (!serverUrl || !token) {
@@ -105,7 +117,7 @@ export async function testBackupConnection(): Promise<{ ok: boolean; message: st
       message: `已连接，电脑上有 ${data.entries ?? 0} 篇日记、${data.media ?? 0} 个媒体文件`,
     };
   } catch {
-    return { ok: false, message: '连接失败，请确认手机和电脑在同一 WiFi，且备份服务已启动' };
+    return { ok: false, message: connectionErrorMessage(serverUrl) };
   }
 }
 
@@ -157,7 +169,7 @@ export async function runIncrementalSync(): Promise<void> {
     setPhase('success');
     window.setTimeout(() => setPhase('idle'), 2000);
   } catch {
-    setLastSyncError('备份失败，请检查网络与备份服务');
+    setLastSyncError(connectionErrorMessage(serverUrl));
     setPhase('error', '备份失败');
   } finally {
     syncing = false;

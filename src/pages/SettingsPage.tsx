@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom';
 import { countUnsynced } from '../db/database';
 import {
   getBackupConfig,
+  getDefaultServerUrl,
   getLastSyncAt,
   getLastSyncError,
   isBackupConfigured,
@@ -31,7 +32,7 @@ function formatTime(iso: string | null): string {
 
 export function SettingsPage() {
   const initial = getBackupConfig();
-  const [serverUrl, setServerUrl] = useState(initial.serverUrl);
+  const [serverUrl, setServerUrl] = useState(initial.serverUrl || getDefaultServerUrl());
   const [token, setToken] = useState(initial.token);
   const [message, setMessage] = useState('');
   const [pending, setPending] = useState({ entries: 0, media: 0 });
@@ -47,6 +48,10 @@ export function SettingsPage() {
 
   useEffect(() => {
     refreshMeta();
+    const suggested = getDefaultServerUrl();
+    if (!initial.serverUrl && suggested) {
+      setServerUrl(suggested);
+    }
     return subscribeSync((next) => {
       setPhase(next);
       if (next === 'success' || next === 'idle') refreshMeta();
@@ -162,12 +167,15 @@ export function SettingsPage() {
       </section>
 
       <section className="settings-hint">
-        <h2>电脑端怎么开</h2>
+        <h2>连不上？按这个做</h2>
         <ol>
-          <li>在电脑上打开文件夹 <code>diary-backup-server</code></li>
-          <li>运行 <code>npm install</code> 然后 <code>npm start</code></li>
-          <li>把终端里显示的地址和密钥填到上面</li>
-          <li>手机和电脑连同一 WiFi，有新日记会自动备份</li>
+          <li>电脑双击运行 <code>diary-backup-server\start.bat</code>，窗口不要关</li>
+          <li>地址填 <code>192.168</code> 开头的，<strong>不要填 172 开头</strong></li>
+          <li>
+            若从 Vercel 主屏幕图标打开：请改用 Safari 访问电脑上的{' '}
+            <code>http://192.168.x.x:3927</code>，重新「添加到主屏幕」
+          </li>
+          <li>密钥复制终端里「设备密钥」整行，保存后点测试连接</li>
         </ol>
       </section>
     </div>
