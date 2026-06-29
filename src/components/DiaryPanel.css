@@ -1,0 +1,97 @@
+.diary-panel {
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  background: var(--bg);
+}
+
+.diary-panel-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.625rem 0 0.5rem;
+  flex-shrink: 0;
+}
+
+.diary-panel-header h2 {
+  margin: 0;
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--text-secondary);
+}
+
+.save-btn {
+  padding: 0.35rem 0.875rem;
+  font-size: 0.8125rem;
+}
+
+.diary-panel-scroll {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+  padding-bottom: 0.5rem;
+}
+
+.diary-panel-scroll label {
+  display: block;
+  font-size: 0.6875rem;
+  font-weight: 500;
+  color: var(--text-secondary);
+  margin: 0.5rem 0 0.3rem;
+}
+
+.diary-panel-scroll label:first-child {
+  margin-top: 0;
+}
+
+.diary-panel .chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.3rem;
+}
+
+.diary-panel .chip {
+  border: 1px solid var(--border);
+  background: var(--bg);
+  border-radius: 6px;
+  padding: 0.25rem 0.6rem;
+  cursor: pointer;
+  font-size: 0.75rem;
+  color: var(--text);
+}
+
+.diary-panel .chip.mood {
+  width: 2rem;
+  height: 2rem;
+  padding: 0;
+  font-size: 1rem;
+}
+
+.diary-panel .chip.active {
+  background: var(--primary);
+  border-color: var(--primary);
+  color: #fff;
+}
+
+.diary-textarea {
+  width: 100%;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 0.625rem;
+  background: var(--bg);
+  resize: none;
+  font-size: 0.9375rem;
+  line-height: 1.5;
+  min-height: 4.5rem;
+}
+
+.diary-textarea.review {
+  min-height: 3.5rem;
+}
+
+.diary-textarea:focus {
+  outline: none;
+  border-color: rgba(55, 53, 47, 0.25);
+}

@@ -1,29 +1,52 @@
 .calendar-page {
-  padding-bottom: 1rem;
+  display: flex;
+  flex-direction: column;
+  height: calc(100dvh - 56px - var(--safe-bottom) - 0.75rem);
+  overflow: hidden;
+  margin: 0 -0.25rem;
+}
+
+.calendar-top {
+  flex: 0 0 50%;
+  max-height: 50%;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  border-bottom: 1px solid var(--border);
+  padding-bottom: 0.375rem;
+}
+
+.page-header.compact {
+  padding: 0;
+  margin-bottom: 0.25rem;
+}
+
+.page-header.compact h1 {
+  font-size: 1.25rem;
 }
 
 .calendar-nav {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  margin: 1.25rem 0 0.75rem;
+  margin: 0 0 0.375rem;
   padding: 0 0.25rem;
+  flex-shrink: 0;
 }
 
 .calendar-nav span {
-  font-size: 0.9375rem;
+  font-size: 0.8125rem;
   font-weight: 500;
   color: var(--text);
-  letter-spacing: -0.01em;
 }
 
 .calendar-nav button {
-  width: 2rem;
-  height: 2rem;
+  width: 1.75rem;
+  height: 1.75rem;
   border: none;
   border-radius: 6px;
   background: transparent;
-  font-size: 1.125rem;
+  font-size: 1rem;
   color: var(--text-secondary);
   cursor: pointer;
 }
@@ -33,29 +56,38 @@
 }
 
 .calendar-grid {
+  flex: 1;
+  min-height: 0;
   display: grid;
   grid-template-columns: repeat(7, 1fr);
-  gap: 0.125rem;
+  grid-template-rows: auto repeat(6, 1fr);
+  gap: 1px;
+  align-content: start;
 }
 
 .weekday {
   text-align: center;
-  font-size: 0.6875rem;
+  font-size: 0.625rem;
   font-weight: 500;
   color: var(--text-secondary);
-  padding: 0.5rem 0 0.35rem;
+  padding: 0.2rem 0;
+  line-height: 1.2;
 }
 
 .day {
-  aspect-ratio: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   border: none;
-  border-radius: 6px;
+  border-radius: 4px;
   background: transparent;
   position: relative;
   cursor: pointer;
-  font-size: 0.875rem;
+  font-size: 0.75rem;
   font-weight: 400;
   color: var(--text);
+  padding: 0;
+  min-height: 0;
 }
 
 .day.empty {
@@ -75,37 +107,15 @@
 
 .day .dot {
   position: absolute;
-  bottom: 5px;
+  bottom: 2px;
   left: 50%;
   transform: translateX(-50%);
-  width: 4px;
-  height: 4px;
+  width: 3px;
+  height: 3px;
   border-radius: 50%;
   background: var(--text-secondary);
 }
 
 .day.selected .dot {
   background: #fff;
-}
-
-.fab {
-  position: fixed;
-  right: 1.25rem;
-  bottom: calc(72px + var(--safe-bottom));
-  width: 3rem;
-  height: 3rem;
-  border-radius: 50%;
-  border: none;
-  background: var(--primary);
-  color: #fff;
-  font-size: 1.75rem;
-  font-weight: 300;
-  line-height: 1;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12);
-  cursor: pointer;
-  z-index: 50;
-}
-
-.fab:disabled {
-  opacity: 0.4;
 }
