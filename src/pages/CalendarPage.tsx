@@ -8,6 +8,7 @@ import {
   upsertEntry,
 } from '../db/database';
 import type { DiaryFormData } from '../types/diary';
+import { runIncrementalSync } from '../services/backupSync';
 import { formatMonthYear, getCalendarDays, toDateString } from '../utils/date';
 import './CalendarPage.css';
 
@@ -128,7 +129,10 @@ export function CalendarPage() {
         initial={formInitial}
         onSave={async (data) => {
           const ok = await upsertEntry(selectedDate, data);
-          if (ok) await refreshMarks();
+          if (ok) {
+            await refreshMarks();
+            runIncrementalSync().catch(() => {});
+          }
           return ok;
         }}
       />

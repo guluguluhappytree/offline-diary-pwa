@@ -5,6 +5,7 @@ import { DbProvider } from './db/DbProvider';
 import { CalendarPage } from './pages/CalendarPage';
 import { HistoryPage } from './pages/HistoryPage';
 import { PhotoPage } from './pages/PhotoPage';
+import { SettingsPage } from './pages/SettingsPage';
 
 export function App() {
   return (
@@ -15,6 +16,7 @@ export function App() {
             <Route index element={<CalendarPage />} />
             <Route path="photos" element={<PhotoPage />} />
             <Route path="history" element={<HistoryPage />} />
+            <Route path="settings" element={<SettingsPage />} />
           </Route>
         </Routes>
       </BrowserRouter>

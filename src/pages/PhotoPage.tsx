@@ -8,6 +8,7 @@ import {
   todayDateString,
 } from '../db/database';
 import type { MediaItem } from '../types/diary';
+import { runIncrementalSync } from '../services/backupSync';
 import './PhotoPage.css';
 
 function MediaCard({ item }: { item: MediaItem }) {
@@ -59,6 +60,7 @@ export function PhotoPage() {
         await addMediaItem(targetDate, blob, mediaType);
       }
       await refresh();
+      runIncrementalSync().catch(() => {});
     } finally {
       setSaving(false);
       if (inputRef.current) inputRef.current.value = '';

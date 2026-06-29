@@ -119,6 +119,42 @@ export async function getAllMediaDesc(): Promise<MediaItem[]> {
   return withDb(() => db.media_items.orderBy('created_at').reverse().toArray(), []);
 }
 
+export async function getUnsyncedEntries(): Promise<DiaryEntry[]> {
+  return withDb(
+    () => db.diary_entries.where('sync_status').equals(0).toArray(),
+    [],
+  );
+}
+
+export async function getUnsyncedMedia(): Promise<MediaItem[]> {
+  return withDb(() => db.media_items.where('sync_status').equals(0).toArray(), []);
+}
+
+export async function markEntrySynced(id: number): Promise<void> {
+  await withDb(async () => {
+    await db.diary_entries.update(id, { sync_status: 1 });
+  }, undefined);
+}
+
+export async function markMediaSynced(id: number): Promise<void> {
+  await withDb(async () => {
+    await db.media_items.update(id, { sync_status: 1 });
+  }, undefined);
+}
+
+export async function countUnsynced(): Promise<{ entries: number; media: number }> {
+  return withDb(
+    async () => {
+      const [entries, media] = await Promise.all([
+        db.diary_entries.where('sync_status').equals(0).count(),
+        db.media_items.where('sync_status').equals(0).count(),
+      ]);
+      return { entries, media };
+    },
+    { entries: 0, media: 0 },
+  );
+}
+
 export function todayDateString(): string {
   const d = new Date();
   const y = d.getFullYear();

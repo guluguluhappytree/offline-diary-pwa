@@ -1,6 +1,8 @@
 import { useCallback, useEffect, useState } from 'react';
+import { Link } from 'react-router-dom';
 
-import { blobToObjectUrl, getAllEntriesDesc, getAllMediaDesc } from '../db/database';
+import { blobToObjectUrl, getAllEntriesDesc, getAllMediaDesc, countUnsynced } from '../db/database';
+import { isBackupConfigured } from '../services/backupConfig';
 import type { DiaryEntry, MediaItem } from '../types/diary';
 import './HistoryPage.css';
 
@@ -50,11 +52,17 @@ export function HistoryPage() {
   const [mode, setMode] = useState<ViewMode>('text');
   const [entries, setEntries] = useState<DiaryEntry[]>([]);
   const [media, setMedia] = useState<MediaItem[]>([]);
+  const [pending, setPending] = useState(0);
 
   const refresh = useCallback(async () => {
-    const [e, m] = await Promise.all([getAllEntriesDesc(), getAllMediaDesc()]);
+    const [e, m, unsynced] = await Promise.all([
+      getAllEntriesDesc(),
+      getAllMediaDesc(),
+      countUnsynced(),
+    ]);
     setEntries(e);
     setMedia(m);
+    setPending(unsynced.entries + unsynced.media);
   }, []);
 
   useEffect(() => {
@@ -63,8 +71,13 @@ export function HistoryPage() {
 
   return (
     <div className="history-page">
-      <header className="page-header">
-        <h1>历史汇总</h1>
+      <header className="page-header history-header">
+        <div className="history-title-row">
+          <h1>历史汇总</h1>
+          <Link to="/settings" className="backup-link">
+            备份{isBackupConfigured() && pending > 0 ? ` · ${pending}` : ''}
+          </Link>
+        </div>
         <div className="toggle">
           <button
             type="button"

@@ -1,6 +1,7 @@
 import { createContext, useContext, useEffect, useState, type ReactNode } from 'react';
 
 import { initDatabase } from './database';
+import { startBackupSync } from '../services/backupSync';
 
 type DbStatus = 'loading' | 'ready' | 'error';
 
@@ -12,7 +13,10 @@ export function DbProvider({ children }: { children: ReactNode }) {
 
   useEffect(() => {
     initDatabase()
-      .then(() => setStatus('ready'))
+      .then(() => {
+        setStatus('ready');
+        startBackupSync();
+      })
       .catch((err) => {
         setErrorMsg(err instanceof Error ? err.message : '本地数据库打开失败');
         setStatus('error');
