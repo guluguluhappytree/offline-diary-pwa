@@ -155,6 +155,50 @@ export async function countUnsynced(): Promise<{ entries: number; media: number 
   );
 }
 
+export async function bulkImportEntries(
+  entries: Array<{
+    date: string;
+    weather?: string | null;
+    mood?: string | null;
+    content?: string;
+    review?: string;
+    created_at?: string;
+    updated_at?: string;
+  }>,
+): Promise<number> {
+  return withDb(async () => {
+    let count = 0;
+    const now = new Date().toISOString();
+    await db.transaction('rw', db.diary_entries, async () => {
+      for (const e of entries) {
+        if (!e.date) continue;
+        const existing = await db.diary_entries.where('date').equals(e.date).first();
+        const row = {
+          date: e.date,
+          weather: e.weather ?? null,
+          mood: e.mood ?? null,
+          content: e.content ?? '',
+          review: e.review ?? '',
+          sync_status: 1 as const,
+          created_at: e.created_at ?? now,
+          updated_at: e.updated_at ?? now,
+        };
+        if (existing?.id) {
+          await db.diary_entries.update(existing.id, row);
+        } else {
+          await db.diary_entries.add(row);
+        }
+        count++;
+      }
+    });
+    return count;
+  }, 0);
+}
+
+export async function countAllEntries(): Promise<number> {
+  return withDb(() => db.diary_entries.count(), 0);
+}
+
 export function todayDateString(): string {
   const d = new Date();
   const y = d.getFullYear();

@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 
-import { countUnsynced } from '../db/database';
+import { countUnsynced, countAllEntries } from '../db/database';
 import {
   getBackupConfig,
   getDefaultServerUrl,
@@ -10,6 +10,7 @@ import {
   isBackupConfigured,
   saveBackupConfig,
 } from '../services/backupConfig';
+import { importEntriesFromServer } from '../services/backupImport';
 import {
   getSyncPhase,
   runIncrementalSync,
@@ -39,9 +40,11 @@ export function SettingsPage() {
   const [phase, setPhase] = useState(getSyncPhase());
   const [lastSyncAt, setLastSyncAt] = useState(getLastSyncAt());
   const [lastError, setLastError] = useState(getLastSyncError());
+  const [localTotal, setLocalTotal] = useState(0);
 
   const refreshMeta = useCallback(async () => {
     setPending(await countUnsynced());
+    setLocalTotal(await countAllEntries());
     setLastSyncAt(getLastSyncAt());
     setLastError(getLastSyncError());
   }, []);
@@ -77,6 +80,14 @@ export function SettingsPage() {
     await runIncrementalSync();
     await refreshMeta();
     setMessage(getLastSyncError() ?? '备份完成');
+  };
+
+  const handleImport = async () => {
+    saveBackupConfig({ serverUrl, token });
+    setMessage('正在从电脑导入历史日记…');
+    const result = await importEntriesFromServer();
+    setMessage(result.message);
+    await refreshMeta();
   };
 
   const configured = isBackupConfigured() || (serverUrl.trim() && token.trim());
@@ -132,6 +143,10 @@ export function SettingsPage() {
             <dd>{configured ? '已配置' : '未配置'}</dd>
           </div>
           <div>
+            <dt>手机本地</dt>
+            <dd>{localTotal} 篇</dd>
+          </div>
+          <div>
             <dt>待备份</dt>
             <dd>
               {pendingTotal === 0
@@ -163,6 +178,14 @@ export function SettingsPage() {
           disabled={phase === 'syncing'}
         >
           立即备份
+        </button>
+        <button
+          type="button"
+          className="btn-primary settings-sync-btn secondary"
+          onClick={handleImport}
+          disabled={phase === 'syncing'}
+        >
+          从电脑导入历史日记
         </button>
       </section>
 
