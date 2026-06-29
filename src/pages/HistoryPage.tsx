@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom';
 import { blobToObjectUrl, getAllEntriesDesc, getAllMediaDesc, countUnsynced } from '../db/database';
 import { isBackupConfigured } from '../services/backupConfig';
 import type { DiaryEntry, MediaItem } from '../types/diary';
+import { weatherIcon } from '../types/diary';
 import './HistoryPage.css';
 
 type ViewMode = 'text' | 'media';
@@ -14,7 +15,7 @@ function EntryCard({ entry }: { entry: DiaryEntry }) {
       <header>
         <strong>{entry.date}</strong>
         <span>
-          {entry.weather} {entry.mood}
+          {weatherIcon(entry.weather)} {entry.mood}
         </span>
       </header>
       {entry.content && <p>{entry.content}</p>}

@@ -45,12 +45,13 @@ export function DiaryEditor({ date, initial, onClose, onSave }: Props) {
         <div className="chips">
           {WEATHER_OPTIONS.map((w) => (
             <button
-              key={w}
+              key={w.value}
               type="button"
-              className={form.weather === w ? 'chip active' : 'chip'}
-              onClick={() => setForm((f) => ({ ...f, weather: w }))}
+              className={form.weather === w.value ? 'chip active' : 'chip'}
+              aria-label={w.value}
+              onClick={() => setForm((f) => ({ ...f, weather: w.value }))}
             >
-              {w}
+              {w.icon}
             </button>
           ))}
         </div>

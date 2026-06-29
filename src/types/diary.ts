@@ -30,5 +30,25 @@ export interface DiaryFormData {
   review: string;
 }
 
-export const WEATHER_OPTIONS = ['晴', '多云', '阴', '雨', '雪', '风'] as const;
+export const WEATHER_OPTIONS = [
+  { value: '晴', icon: '☀️' },
+  { value: '多云', icon: '⛅' },
+  { value: '阴', icon: '☁️' },
+  { value: '雨', icon: '🌧️' },
+  { value: '雪', icon: '❄️' },
+  { value: '风', icon: '💨' },
+] as const;
+
 export const MOOD_OPTIONS = ['😊', '😐', '😔', '😤', '🥰', '😴'] as const;
+
+export const DIARY_QUESTION = '今天发生了什么重要进展？它带给你怎样的真实感受？';
+
+export const REVIEW_QUESTIONS = [
+  '今天什么事超出了预期？核心原因是什么？',
+  '你提炼出了什么新规则？',
+  '明天具体调整哪个行动？',
+] as const;
+
+export function weatherIcon(weather: string | null | undefined): string {
+  return WEATHER_OPTIONS.find((w) => w.value === weather)?.icon ?? '☀️';
+}

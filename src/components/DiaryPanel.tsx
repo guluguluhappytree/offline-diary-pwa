@@ -1,7 +1,12 @@
 import { useEffect, useMemo, useState } from 'react';
 
 import type { DiaryFormData } from '../types/diary';
-import { MOOD_OPTIONS, WEATHER_OPTIONS } from '../types/diary';
+import {
+  DIARY_QUESTION,
+  MOOD_OPTIONS,
+  REVIEW_QUESTIONS,
+  WEATHER_OPTIONS,
+} from '../types/diary';
 import './DiaryPanel.css';
 
 interface Props {
@@ -16,34 +21,52 @@ const EMPTY: DiaryFormData = {
   review: '',
 };
 
-const CONTENT_PLACEHOLDER =
-  '今天发生了什么重要进展？它带给你怎样的真实感受？';
+function parseReviewAnswers(review: string): string[] {
+  if (!review.trim()) return ['', '', ''];
+  const parts = review.split('\n\n---\n\n');
+  if (parts.length >= 2) {
+    return [parts[0] ?? '', parts[1] ?? '', parts[2] ?? ''];
+  }
+  return [review, '', ''];
+}
 
-const REVIEW_PLACEHOLDER = `今天什么事超出了预期？核心原因是什么？
-你提炼出了什么新规则？
-明天具体调整哪个行动？`;
+function serializeReviewAnswers(answers: string[]): string {
+  const trimmed = answers.map((a) => a.trim());
+  if (!trimmed.some(Boolean)) return '';
+  return trimmed.join('\n\n---\n\n');
+}
 
 export function DiaryPanel({ initial, onSave }: Props) {
   const [form, setForm] = useState<DiaryFormData>(EMPTY);
+  const [reviewAnswers, setReviewAnswers] = useState(['', '', '']);
   const [saving, setSaving] = useState(false);
   const [saved, setSaved] = useState(false);
 
   useEffect(() => {
-    setForm({ ...EMPTY, ...initial });
+    const review = initial?.review ?? '';
+    setForm({ ...EMPTY, ...initial, review: '' });
+    setReviewAnswers(parseReviewAnswers(review));
     setSaved(false);
   }, [initial]);
 
-  const hasWritten = useMemo(
-    () => form.content.trim().length > 0 || form.review.trim().length > 0,
-    [form.content, form.review],
-  );
+  const hasWritten = useMemo(() => {
+    const hasReview = reviewAnswers.some((a) => a.trim().length > 0);
+    return form.content.trim().length > 0 || hasReview;
+  }, [form.content, reviewAnswers]);
 
   const handleSave = async () => {
     if (!hasWritten) return;
     setSaving(true);
     try {
-      const ok = await onSave(form);
-      if (ok) setSaved(true);
+      const payload: DiaryFormData = {
+        ...form,
+        review: serializeReviewAnswers(reviewAnswers),
+      };
+      const ok = await onSave(payload);
+      if (ok) {
+        setForm(payload);
+        setSaved(true);
+      }
     } finally {
       setSaving(false);
     }
@@ -56,15 +79,17 @@ export function DiaryPanel({ initial, onSave }: Props) {
         <div className="chips">
           {WEATHER_OPTIONS.map((w) => (
             <button
-              key={w}
+              key={w.value}
               type="button"
-              className={form.weather === w ? 'chip active' : 'chip'}
+              className={form.weather === w.value ? 'chip weather active' : 'chip weather'}
+              aria-label={w.value}
+              title={w.value}
               onClick={() => {
-                setForm((f) => ({ ...f, weather: w }));
+                setForm((f) => ({ ...f, weather: w.value }));
                 setSaved(false);
               }}
             >
-              {w}
+              {w.icon}
             </button>
           ))}
         </div>
@@ -87,26 +112,40 @@ export function DiaryPanel({ initial, onSave }: Props) {
         </div>
 
         <label>日记</label>
-        <textarea
-          className="diary-textarea"
-          placeholder={CONTENT_PLACEHOLDER}
-          value={form.content}
-          onChange={(e) => {
-            setForm((f) => ({ ...f, content: e.target.value }));
-            setSaved(false);
-          }}
-        />
+        <div className="qa-block">
+          <p className="qa-question">{DIARY_QUESTION}</p>
+          <textarea
+            className="qa-answer"
+            placeholder="写下你的回答…"
+            rows={2}
+            value={form.content}
+            onChange={(e) => {
+              setForm((f) => ({ ...f, content: e.target.value }));
+              setSaved(false);
+            }}
+          />
+        </div>
 
         <label>复盘</label>
-        <textarea
-          className="diary-textarea review"
-          placeholder={REVIEW_PLACEHOLDER}
-          value={form.review}
-          onChange={(e) => {
-            setForm((f) => ({ ...f, review: e.target.value }));
-            setSaved(false);
-          }}
-        />
+        {REVIEW_QUESTIONS.map((question, index) => (
+          <div key={question} className="qa-block review-block">
+            <p className="qa-question">{question}</p>
+            <textarea
+              className="qa-answer"
+              placeholder="写下你的回答…"
+              rows={2}
+              value={reviewAnswers[index] ?? ''}
+              onChange={(e) => {
+                setReviewAnswers((prev) => {
+                  const next = [...prev];
+                  next[index] = e.target.value;
+                  return next;
+                });
+                setSaved(false);
+              }}
+            />
+          </div>
+        ))}
 
         {hasWritten && (
           <div className="save-area">

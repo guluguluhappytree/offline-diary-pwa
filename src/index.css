@@ -10,6 +10,7 @@
   --primary-soft: #f7f6f3;
   --radius: 6px;
   --safe-bottom: env(safe-area-inset-bottom, 0px);
+  --tab-bar-height: 3.75rem;
   font-family: ui-sans-serif, -apple-system, 'PingFang SC', 'Segoe UI', sans-serif;
   line-height: 1.5;
   color: var(--text);
