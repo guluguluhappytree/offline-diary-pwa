@@ -71,7 +71,7 @@ export function CalendarPage() {
     <div className="calendar-page">
       <header className="page-header">
         <h1>日记</h1>
-        <p className="subtitle">完全离线 · IndexedDB 本地存储</p>
+        <p className="subtitle">完全离线 · 本地优先</p>
       </header>
 
       <div className="calendar-nav">

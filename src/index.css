@@ -1,17 +1,18 @@
 :root {
-  --bg: #faf7f2;
+  --bg: #ffffff;
   --surface: #ffffff;
-  --primary: #c4956a;
-  --primary-dark: #8b6914;
-  --text: #2c2416;
-  --text-secondary: #7a6e5d;
-  --border: #e8e0d4;
-  --radius: 16px;
+  --primary: #191919;
+  --primary-soft: #f7f6f3;
+  --text: #191919;
+  --text-secondary: rgba(55, 53, 47, 0.65);
+  --border: rgba(55, 53, 47, 0.09);
+  --radius: 8px;
   --safe-bottom: env(safe-area-inset-bottom, 0px);
-  font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+  font-family: ui-sans-serif, -apple-system, 'PingFang SC', 'Segoe UI', sans-serif;
   line-height: 1.5;
   color: var(--text);
   background: var(--bg);
+  -webkit-font-smoothing: antialiased;
 }
 
 * {
@@ -32,23 +33,30 @@ textarea {
 
 .page-header h1 {
   margin: 0;
-  font-size: 1.75rem;
+  font-size: 1.625rem;
+  font-weight: 600;
+  letter-spacing: -0.02em;
 }
 
 .subtitle {
-  margin: 0.25rem 0 0;
+  margin: 0.2rem 0 0;
   color: var(--text-secondary);
-  font-size: 0.875rem;
+  font-size: 0.8125rem;
 }
 
 .btn-primary {
   background: var(--primary);
   color: #fff;
   border: none;
-  border-radius: 999px;
-  padding: 0.6rem 1.25rem;
-  font-weight: 600;
+  border-radius: 6px;
+  padding: 0.55rem 1rem;
+  font-weight: 500;
+  font-size: 0.875rem;
   cursor: pointer;
+}
+
+.btn-primary:disabled {
+  opacity: 0.5;
 }
 
 .btn-ghost {
@@ -56,12 +64,14 @@ textarea {
   border: none;
   color: var(--text-secondary);
   cursor: pointer;
+  font-size: 0.875rem;
 }
 
 .empty {
   text-align: center;
   color: var(--text-secondary);
   padding: 3rem 1rem;
+  font-size: 0.875rem;
 }
 
 .boot-screen {
@@ -76,18 +86,18 @@ textarea {
 }
 
 .boot-error p {
-  color: #c45c5c;
+  color: #eb5757;
   font-weight: 600;
   margin: 0;
 }
 
 .boot-spinner {
-  width: 2rem;
-  height: 2rem;
-  border: 3px solid var(--border);
+  width: 1.5rem;
+  height: 1.5rem;
+  border: 2px solid var(--border);
   border-top-color: var(--primary);
   border-radius: 50%;
-  animation: spin 0.8s linear infinite;
+  animation: spin 0.7s linear infinite;
 }
 
 .page-loading {

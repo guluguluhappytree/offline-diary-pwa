@@ -5,12 +5,14 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "tsc && vite build",
+    "build": "node scripts/generate-icons.mjs && tsc && vite build",
+    "icons": "node scripts/generate-icons.mjs",
     "preview": "vite preview"
   },
   "devDependencies": {
     "@types/react": "^19.2.17",
     "@types/react-dom": "^19.2.3",
+    "sharp": "^0.35.2",
     "typescript": "~6.0.2",
     "vite": "^8.1.0"
   },

@@ -1,4 +1,6 @@
 import { NavLink, Outlet } from 'react-router-dom';
+
+import { TabIconDiary, TabIconHistory, TabIconPhoto } from './TabIcons';
 import './Layout.css';
 
 export function Layout() {
@@ -9,16 +11,28 @@ export function Layout() {
       </main>
       <nav className="tab-bar">
         <NavLink to="/" end className={({ isActive }) => (isActive ? 'tab active' : 'tab')}>
-          <span className="tab-icon">📅</span>
-          <span>日历</span>
+          {({ isActive }) => (
+            <>
+              <TabIconDiary active={isActive} />
+              <span>日记</span>
+            </>
+          )}
         </NavLink>
         <NavLink to="/photos" className={({ isActive }) => (isActive ? 'tab active' : 'tab')}>
-          <span className="tab-icon">📷</span>
-          <span>照片</span>
+          {({ isActive }) => (
+            <>
+              <TabIconPhoto active={isActive} />
+              <span>照片</span>
+            </>
+          )}
         </NavLink>
         <NavLink to="/history" className={({ isActive }) => (isActive ? 'tab active' : 'tab')}>
-          <span className="tab-icon">📜</span>
-          <span>历史</span>
+          {({ isActive }) => (
+            <>
+              <TabIconHistory active={isActive} />
+              <span>历史</span>
+            </>
+          )}
         </NavLink>
       </nav>
     </div>
