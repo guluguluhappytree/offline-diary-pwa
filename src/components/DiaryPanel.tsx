@@ -17,7 +17,7 @@ const EMPTY: DiaryFormData = {
 };
 
 const CONTENT_PLACEHOLDER =
-  '今天发生了什么重要进展？它带给你怎样的真实感受？（拒绝流水账）';
+  '今天发生了什么重要进展？它带给你怎样的真实感受？';
 
 const REVIEW_PLACEHOLDER = `今天什么事超出了预期？核心原因是什么？
 你提炼出了什么新规则？
