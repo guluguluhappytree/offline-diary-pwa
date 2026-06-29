@@ -1,0 +1,47 @@
+.layout {
+  min-height: 100dvh;
+  display: flex;
+  flex-direction: column;
+  padding-bottom: calc(64px + var(--safe-bottom));
+}
+
+.layout-main {
+  flex: 1;
+  padding: 1rem 1rem 0;
+  max-width: 640px;
+  margin: 0 auto;
+  width: 100%;
+}
+
+.tab-bar {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  display: flex;
+  background: var(--surface);
+  border-top: 1px solid var(--border);
+  padding-bottom: var(--safe-bottom);
+  z-index: 100;
+}
+
+.tab {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.15rem;
+  padding: 0.5rem;
+  text-decoration: none;
+  color: var(--text-secondary);
+  font-size: 0.75rem;
+}
+
+.tab.active {
+  color: var(--primary);
+  font-weight: 600;
+}
+
+.tab-icon {
+  font-size: 1.25rem;
+}

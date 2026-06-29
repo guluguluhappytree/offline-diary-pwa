@@ -1,0 +1,86 @@
+.calendar-nav {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin: 1rem 0;
+}
+
+.calendar-nav button {
+  width: 2.5rem;
+  height: 2.5rem;
+  border: 1px solid var(--border);
+  border-radius: 50%;
+  background: var(--surface);
+  font-size: 1.25rem;
+  cursor: pointer;
+}
+
+.calendar-grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 0.35rem;
+}
+
+.weekday {
+  text-align: center;
+  font-size: 0.75rem;
+  color: var(--text-secondary);
+  padding: 0.25rem;
+}
+
+.day {
+  aspect-ratio: 1;
+  border: none;
+  border-radius: 12px;
+  background: var(--surface);
+  position: relative;
+  cursor: pointer;
+  font-size: 0.95rem;
+}
+
+.day.empty {
+  background: transparent;
+  cursor: default;
+}
+
+.day.today {
+  color: var(--primary-dark);
+  font-weight: 700;
+}
+
+.day.selected {
+  background: var(--primary);
+  color: #fff;
+}
+
+.day .dot {
+  position: absolute;
+  bottom: 4px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: var(--primary);
+}
+
+.day.selected .dot {
+  background: #fff;
+}
+
+.fab {
+  position: fixed;
+  right: 1.25rem;
+  bottom: calc(80px + var(--safe-bottom));
+  width: 3.5rem;
+  height: 3.5rem;
+  border-radius: 50%;
+  border: none;
+  background: var(--primary);
+  color: #fff;
+  font-size: 2rem;
+  line-height: 1;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  cursor: pointer;
+  z-index: 50;
+}

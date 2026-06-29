@@ -1,0 +1,73 @@
+.editor-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(44, 36, 22, 0.45);
+  display: flex;
+  align-items: flex-end;
+  z-index: 200;
+}
+
+.editor-sheet {
+  background: var(--surface);
+  width: 100%;
+  max-height: 92dvh;
+  overflow-y: auto;
+  border-radius: 20px 20px 0 0;
+  padding: 1.25rem;
+  padding-bottom: calc(1.25rem + var(--safe-bottom));
+}
+
+.editor-sheet h2 {
+  margin: 0 0 1rem;
+}
+
+.editor-sheet label {
+  display: block;
+  font-size: 0.8rem;
+  color: var(--text-secondary);
+  margin: 0.75rem 0 0.35rem;
+}
+
+.chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.chip {
+  border: 1px solid var(--border);
+  background: var(--bg);
+  border-radius: 999px;
+  padding: 0.4rem 0.9rem;
+  cursor: pointer;
+}
+
+.chip.mood {
+  width: 2.75rem;
+  height: 2.75rem;
+  border-radius: 50%;
+  padding: 0;
+  font-size: 1.25rem;
+}
+
+.chip.active {
+  background: var(--primary);
+  border-color: var(--primary);
+  color: #fff;
+}
+
+.editor-sheet textarea {
+  width: 100%;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 0.75rem;
+  background: var(--bg);
+  resize: vertical;
+}
+
+.editor-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.75rem;
+  margin-top: 1.25rem;
+}
