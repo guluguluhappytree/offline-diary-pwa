@@ -1,12 +1,8 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
-  <rect width="512" height="512" fill="#ffffff" rx="108"/>
-  <text
-    x="256"
-    y="348"
-    font-family="system-ui, -apple-system, 'PingFang SC', 'Helvetica Neue', sans-serif"
-    font-size="280"
-    font-weight="500"
-    text-anchor="middle"
-    fill="#191919"
-  >日</text>
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" fill="none">
+  <rect width="512" height="512" rx="112" fill="#FFFFFF"/>
+  <g fill="#111111" transform="translate(256, 256)">
+    <rect x="-100" y="-100" width="200" height="200" rx="20"/>
+    <rect x="-100" y="-18" width="200" height="36" fill="#FFFFFF"/>
+  </g>
 </svg>
