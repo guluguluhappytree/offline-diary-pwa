@@ -155,6 +155,40 @@ export async function countUnsynced(): Promise<{ entries: number; media: number 
   );
 }
 
+export async function replaceAllEntries(
+  entries: Array<{
+    date: string;
+    weather?: string | null;
+    mood?: string | null;
+    content?: string;
+    review?: string;
+    created_at?: string;
+    updated_at?: string;
+  }>,
+): Promise<number> {
+  return withDb(async () => {
+    const now = new Date().toISOString();
+    await db.transaction('rw', db.diary_entries, async () => {
+      await db.diary_entries.clear();
+      for (const e of entries) {
+        if (!e.date) continue;
+        await db.diary_entries.add({
+          date: e.date,
+          weather: e.weather ?? null,
+          mood: e.mood ?? null,
+          content: e.content ?? '',
+          review: e.review ?? '',
+          sync_status: 1,
+          created_at: e.created_at ?? now,
+          updated_at: e.updated_at ?? now,
+        });
+      }
+    });
+    return entries.filter((e) => e.date).length;
+  }, 0);
+}
+
+/** @deprecated 使用 replaceAllEntries 全量同步 */
 export async function bulkImportEntries(
   entries: Array<{
     date: string;

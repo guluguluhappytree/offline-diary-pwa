@@ -1,4 +1,4 @@
-import { bulkImportEntries, countAllEntries } from '../db/database';
+import { replaceAllEntries } from '../db/database';
 import { getBackupConfig, isBackupConfigured } from './backupConfig';
 
 export async function importEntriesFromServer(): Promise<{ ok: boolean; message: string }> {
@@ -35,11 +35,10 @@ export async function importEntriesFromServer(): Promise<{ ok: boolean; message:
       return { ok: false, message: '电脑上没有可导入的日记' };
     }
 
-    const imported = await bulkImportEntries(entries);
-    const total = await countAllEntries();
+    const imported = await replaceAllEntries(entries);
     return {
       ok: true,
-      message: `已导入 ${imported} 篇，手机本地共 ${total} 篇日记`,
+      message: `已全量同步 ${imported} 篇（手机数据已与电脑一致）`,
     };
   } catch {
     const onHttps = window.location.protocol === 'https:';

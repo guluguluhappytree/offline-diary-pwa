@@ -185,7 +185,7 @@ export function SettingsPage() {
           onClick={handleImport}
           disabled={phase === 'syncing'}
         >
-          从电脑导入历史日记
+          从电脑全量同步历史日记
         </button>
       </section>
 
