@@ -7,6 +7,7 @@ export interface DiaryEntry {
   weather: string | null;
   mood: string | null;
   content: string;
+  notes: string;
   review: string;
   sync_status: SyncStatus;
   created_at: string;
@@ -27,6 +28,7 @@ export interface DiaryFormData {
   weather: string;
   mood: string;
   content: string;
+  notes: string;
   review: string;
 }
 

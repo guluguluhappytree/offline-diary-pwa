@@ -18,6 +18,7 @@ const EMPTY_FORM: DiaryFormData = {
   weather: '晴',
   mood: '😊',
   content: '',
+  notes: '',
   review: '',
 };
 
@@ -45,6 +46,7 @@ export function CalendarPage() {
             weather: existing.weather ?? '晴',
             mood: existing.mood ?? '😊',
             content: existing.content,
+            notes: existing.notes ?? '',
             review: existing.review,
           }
         : { ...EMPTY_FORM },

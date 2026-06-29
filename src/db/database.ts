@@ -12,6 +12,19 @@ class DiaryDatabase extends Dexie {
       diary_entries: '++id, &date, sync_status, updated_at',
       media_items: '++id, diary_date, sync_status, created_at',
     });
+    this.version(2)
+      .stores({
+        diary_entries: '++id, &date, sync_status, updated_at',
+        media_items: '++id, diary_date, sync_status, created_at',
+      })
+      .upgrade((tx) =>
+        tx
+          .table('diary_entries')
+          .toCollection()
+          .modify((entry) => {
+            if (entry.notes === undefined) entry.notes = '';
+          }),
+      );
   }
 }
 
@@ -68,7 +81,7 @@ export async function getEntryByDate(date: string): Promise<DiaryEntry | undefin
 
 export async function upsertEntry(
   date: string,
-  data: Pick<DiaryEntry, 'weather' | 'mood' | 'content' | 'review'>,
+  data: Pick<DiaryEntry, 'weather' | 'mood' | 'content' | 'notes' | 'review'>,
 ): Promise<boolean> {
   return withDb(async () => {
     const now = new Date().toISOString();
@@ -161,6 +174,7 @@ export async function replaceAllEntries(
     weather?: string | null;
     mood?: string | null;
     content?: string;
+    notes?: string;
     review?: string;
     created_at?: string;
     updated_at?: string;
@@ -177,6 +191,7 @@ export async function replaceAllEntries(
           weather: e.weather ?? null,
           mood: e.mood ?? null,
           content: e.content ?? '',
+          notes: e.notes ?? '',
           review: e.review ?? '',
           sync_status: 1,
           created_at: e.created_at ?? now,
@@ -195,6 +210,7 @@ export async function bulkImportEntries(
     weather?: string | null;
     mood?: string | null;
     content?: string;
+    notes?: string;
     review?: string;
     created_at?: string;
     updated_at?: string;
@@ -212,6 +228,7 @@ export async function bulkImportEntries(
           weather: e.weather ?? null,
           mood: e.mood ?? null,
           content: e.content ?? '',
+          notes: e.notes ?? '',
           review: e.review ?? '',
           sync_status: 1 as const,
           created_at: e.created_at ?? now,

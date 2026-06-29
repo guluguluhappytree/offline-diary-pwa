@@ -19,6 +19,12 @@ function EntryCard({ entry }: { entry: DiaryEntry }) {
         </span>
       </header>
       {entry.content && <p>{entry.content}</p>}
+      {entry.notes && (
+        <div className="notes-block">
+          <small>碎碎念</small>
+          <p>{entry.notes}</p>
+        </div>
+      )}
       {entry.review && (
         <div className="review">
           <small>复盘</small>

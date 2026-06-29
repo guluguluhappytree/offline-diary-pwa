@@ -79,6 +79,24 @@
   line-height: 1.55;
 }
 
+.notes-block {
+  background: var(--accent);
+  border-radius: 4px;
+  padding: 0.5rem 0.625rem;
+  margin-top: 0.5rem;
+}
+
+.notes-block small {
+  color: var(--text-secondary);
+  font-weight: 500;
+  font-size: 0.75rem;
+}
+
+.notes-block p {
+  margin: 0.25rem 0 0;
+  font-size: 0.875rem;
+}
+
 .review {
   background: var(--accent);
   border-radius: 4px;

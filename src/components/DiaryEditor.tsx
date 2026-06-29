@@ -15,6 +15,7 @@ const EMPTY: DiaryFormData = {
   weather: '晴',
   mood: '😊',
   content: '',
+  notes: '',
   review: '',
 };
 

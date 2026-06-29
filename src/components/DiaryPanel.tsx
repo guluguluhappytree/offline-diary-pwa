@@ -18,6 +18,7 @@ const EMPTY: DiaryFormData = {
   weather: '晴',
   mood: '😊',
   content: '',
+  notes: '',
   review: '',
 };
 
@@ -51,8 +52,12 @@ export function DiaryPanel({ initial, onSave }: Props) {
 
   const hasWritten = useMemo(() => {
     const hasReview = reviewAnswers.some((a) => a.trim().length > 0);
-    return form.content.trim().length > 0 || hasReview;
-  }, [form.content, reviewAnswers]);
+    return (
+      form.content.trim().length > 0 ||
+      form.notes.trim().length > 0 ||
+      hasReview
+    );
+  }, [form.content, form.notes, reviewAnswers]);
 
   const handleSave = async () => {
     if (!hasWritten) return;
@@ -125,6 +130,19 @@ export function DiaryPanel({ initial, onSave }: Props) {
             }}
           />
         </div>
+
+        <label>碎碎念</label>
+        <p className="field-hint">随便记流水账、零碎想法，不用想结构</p>
+        <textarea
+          className="notes-textarea"
+          placeholder="今天还发生了什么？想到什么就写什么…"
+          rows={3}
+          value={form.notes}
+          onChange={(e) => {
+            setForm((f) => ({ ...f, notes: e.target.value }));
+            setSaved(false);
+          }}
+        />
 
         <label>复盘</label>
         {REVIEW_QUESTIONS.map((question, index) => (
