@@ -31,7 +31,7 @@ export function DiaryPanel({ initial, onSave }: Props) {
   useEffect(() => {
     setForm({ ...EMPTY, ...initial });
     setSaved(false);
-  }, [date, initial]);
+  }, [initial]);
 
   const hasWritten = useMemo(
     () => form.content.trim().length > 0 || form.review.trim().length > 0,
